@@ -1,3 +1,4 @@
+import datetime
 import requests
 
 
@@ -12,12 +13,20 @@ data = response.json()
 longitude = data["iss_position"]["longitude"]
 latitude = data["iss_position"]["latitude"]
 iss_position = (longitude, latitude)
-print(iss_position)
 
 
 parameters = {
     "lat": MY_LAT,
-    "lng": MY_LNG
+    "lng": MY_LNG,
+    "formatted": 0
 }
 response_sunrise = requests.get(url=" https://api.sunrise-sunset.org/json", params=parameters)
-print(response_sunrise.json())
+response_sunrise.raise_for_status()
+data_sunrise = response_sunrise.json()
+sunrise = data_sunrise["results"]["sunrise"].split("T")[1].split(":")[0]
+sunset = data_sunrise["results"]["sunset"].split("T")[1].split(":")[0]
+print(sunrise)
+print(sunset)
+
+time_now = datetime.datetime.now()
+print(time_now.hour)
